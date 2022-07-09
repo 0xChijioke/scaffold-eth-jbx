@@ -2,6 +2,7 @@ import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useJuiceboxBalance, useJuicebox } from "../hooks";
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -9,13 +10,34 @@ import { Link } from "react-router-dom";
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-function Home({ yourLocalBalance, readContracts }) {
+
+const PROJECT_ID = 44; // BuidlGuidl Project ID
+
+function Home({ yourLocalBalance, readContracts, mainnetProvider, DEBUG }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
 
+  // you can fetch the balance of any project on juicebox.money
+  // In this example we are fetching the balance of https://juicebox.money/#/@buidlguidl
+  const { data: balance } = useJuiceboxBalance({ projectId: PROJECT_ID }, mainnetProvider);
+  const balanceETH = balance ? parseFloat(ethers.utils.formatEther(balance)).toFixed(4) : "...";
+  if (DEBUG) console.log(balanceETH);
+
   return (
     <div>
+      <div>
+        {/* <div>
+          <h1>Project {PROJECT_ID}</h1>
+          <span>Metadata content id: {cid ?? "..."}
+         <br />
+            project owner: {owner ?? "..."}
+          </span>
+        </div>  */}
+        <p>
+          The juicebox project with Project ID: {PROJECT_ID} has a balance of {balanceETH} ETH
+        </p>
+      </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         This Is Your App Home. You can start editing it in{" "}
