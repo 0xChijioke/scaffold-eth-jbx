@@ -2,7 +2,8 @@ import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useJuiceboxBalance, useJuicebox } from "../hooks";
+import { useJuiceboxBalance, useJuiceboxController } from "../hooks";
+import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -18,25 +19,38 @@ function Home({ yourLocalBalance, readContracts, mainnetProvider, DEBUG }) {
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
 
+  const { data: cid } = useProjectMetadataContent({
+    projectId: PROJECT_ID,
+    domain: 0,
+  });
+  const { data: owner } = useProjectOwner({ projectId: PROJECT_ID });
+
   // you can fetch the balance of any project on juicebox.money
   // In this example we are fetching the balance of https://juicebox.money/#/@buidlguidl
   const { data: balance } = useJuiceboxBalance({ projectId: PROJECT_ID }, mainnetProvider);
   const balanceETH = balance ? parseFloat(ethers.utils.formatEther(balance)).toFixed(4) : "...";
   if (DEBUG) console.log(balanceETH);
 
+  //  Get the controller or any project with this hook
+  const { data: getController } = useJuiceboxController({ projectId: PROJECT_ID }, mainnetProvider);
+  console.log(getController);
+  const controller = getController ? getController.slice(0, 4) + ".." + getController.slice(-4) : "...";
+
   return (
     <div>
       <div>
-        {/* <div>
+        <div>
           <h1>Project {PROJECT_ID}</h1>
-          <span>Metadata content id: {cid ?? "..."}
-         <br />
+          <span>
+            Metadata content id: {cid ?? "..."}
+            <br />
             project owner: {owner ?? "..."}
           </span>
-        </div>  */}
-        <p>
-          The juicebox project with Project ID: {PROJECT_ID} has a balance of {balanceETH} ETH
-        </p>
+        </div>
+      </div>
+      <div style={{ margin: 32 }}>
+        <span style={{ marginRight: 8 }}>Controller: {controller}</span>
+        The juicebox project with Project ID: {PROJECT_ID} has a balance of {balanceETH} ETH
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
