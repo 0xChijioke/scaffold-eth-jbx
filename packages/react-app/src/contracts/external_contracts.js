@@ -784,6 +784,11 @@ const DAIABI = [
   },
 ];
 
+// Example how you could bring in juicebox contracts to application
+const JBSinglecontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json`);
+const JBProjectscontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBProjects.json`);
+const JBDirectorycontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBDirectory.json`);
+
 // Mainnet DAI, Optimism and Arbitrium Rollup Contracts with local addresses
 module.exports = {
   1: {
@@ -795,6 +800,18 @@ module.exports = {
       UNI: {
         address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
         abi: ERC20ABI,
+      },
+      JBSingleTokenPaymentTerminalStore: {
+        address: JBSinglecontract.address,
+        abi: JBSinglecontract.abi,
+      },
+      JBProjects: {
+        address: JBProjectscontract.address,
+        abi: JBProjectscontract.abi,
+      },
+      JBDirectory: {
+        address: JBDirectorycontract.address,
+        abi: JBDirectorycontract.abi,
       },
     },
   },

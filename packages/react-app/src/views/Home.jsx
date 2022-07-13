@@ -2,8 +2,27 @@ import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useJuiceboxBalance, useJuiceboxController } from "../hooks";
-import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
+import { useQuery, gql } from "@apollo/client";
+// import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
+
+export const JUICE = gql`
+  {
+    protocolLogs(first: 5) {
+      id
+      projectsCount
+    }
+    projectCreateEvents(first: 5) {
+      id
+      project {
+        id
+      }
+      projectId
+      cv
+    }
+  }
+`;
+
+// const PROJECT_ID = 2;
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -11,47 +30,39 @@ import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-
-const PROJECT_ID = 44; // BuidlGuidl Project ID
-
-function Home({ yourLocalBalance, readContracts, mainnetProvider, DEBUG }) {
+function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
+  // const { data: cid } = useProjectMetadataContent({
+  //   projectId: PROJECT_ID,
+  //   domain: 1,
+  // });
+  // const { data: owner } = useProjectOwner({ projectId: PROJECT_ID });
 
-  const { data: cid } = useProjectMetadataContent({
-    projectId: PROJECT_ID,
-    domain: 0,
-  });
-  const { data: owner } = useProjectOwner({ projectId: PROJECT_ID });
+  const terminals = useContractReader(mainnetContracts, "JBDirectory", "terminalsOf", [44]);
+  const terminal = terminals ? terminals[0] : "";
+  console.log(terminal);
 
-  // you can fetch the balance of any project on juicebox.money
-  // In this example we are fetching the balance of https://juicebox.money/#/@buidlguidl
-  const { data: balance } = useJuiceboxBalance({ projectId: PROJECT_ID }, mainnetProvider);
-  const balanceETH = balance ? parseFloat(ethers.utils.formatEther(balance)).toFixed(4) : "...";
-  if (DEBUG) console.log(balanceETH);
+  const myMainnetJuiceBalance = useContractReader(mainnetContracts, "JBSingleTokenPaymentTerminalStore", "balanceOf", [
+    terminal,
+    44,
+  ]);
+  console.log(myMainnetJuiceBalance);
+  const juiceProject = useContractReader(mainnetContracts, "JBProjects", "tokenURI", [1]);
+  console.log("Project!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + juiceProject + "PROject");
 
-  //  Get the controller or any project with this hook
-  const { data: getController } = useJuiceboxController({ projectId: PROJECT_ID }, mainnetProvider);
-  console.log(getController);
-  const controller = getController ? getController.slice(0, 4) + ".." + getController.slice(-4) : "...";
-
+  
   return (
     <div>
-      <div>
-        <div>
-          <h1>Project {PROJECT_ID}</h1>
-          <span>
-            Metadata content id: {cid ?? "..."}
-            <br />
-            project owner: {owner ?? "..."}
-          </span>
-        </div>
-      </div>
-      <div style={{ margin: 32 }}>
-        <span style={{ marginRight: 8 }}>Controller: {controller}</span>
-        The juicebox project with Project ID: {PROJECT_ID} has a balance of {balanceETH} ETH
-      </div>
+      {/* <div>
+        <h1>Project {PROJECT_ID}</h1>
+        <span>
+          Metadata content id: {cid ?? "..."}
+          <br />
+          project owner: {owner ?? "..."}
+        </span>
+      </div> */}
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         This Is Your App Home. You can start editing it in{" "}

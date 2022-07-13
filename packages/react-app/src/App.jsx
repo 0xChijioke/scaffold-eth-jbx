@@ -33,6 +33,7 @@ import { Home, ExampleUI, Hints, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 
 const { ethers } = require("ethers");
+
 /*
     Welcome to 🏗 scaffold-eth !
 
@@ -310,12 +311,7 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Home
-            yourLocalBalance={yourLocalBalance}
-            DEBUG={DEBUG}
-            mainnetProvider={mainnetProvider}
-            readContracts={readContracts}
-          />
+          <Home mainnetContracts={mainnetContracts} yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
         </Route>
         <Route exact path="/debug">
           {/*
