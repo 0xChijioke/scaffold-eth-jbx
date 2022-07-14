@@ -11,7 +11,7 @@ import "@jbx-protocol/contracts-v2/contracts/libraries/JBTokens.sol";
 
 
 
-contract JBX {
+contract YourContract {
 JBController public jbController;
 IJBProjectPayer public juiceBoxPayer;
 uint256 public juiceBoxProjectId;
