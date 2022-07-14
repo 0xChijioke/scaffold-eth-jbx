@@ -1,26 +1,30 @@
 import { useContractReader } from "eth-hooks";
+import millify from "millify";
+import { Col, Row, Statistic, Typography } from "antd";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 // import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
 
-export const JUICE = gql`
-  {
-    protocolLogs(first: 5) {
-      id
-      projectsCount
-    }
-    projectCreateEvents(first: 5) {
-      id
-      project {
-        id
-      }
-      projectId
-      cv
-    }
-  }
-`;
+const { Title } = Typography;
+
+// export const JUICE = gql`
+//   {
+//     protocolLogs(first: 5) {
+//       id
+//       projectsCount
+//     }
+//     projectCreateEvents(first: 5) {
+//       id
+//       project {
+//         id
+//       }
+//       projectId
+//       cv
+//     }
+//   }
+// `;
 
 const PROJECT_ID = 44;
 
@@ -51,10 +55,13 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
     terminal,
     PROJECT_ID,
   ]);
+  const juiceProjectBalance = myMainnetJuiceBalance
+    ? Number(ethers.utils.formatEther(myMainnetJuiceBalance)).toFixed(2)
+    : 0 ;
 
   const juiceProjectOwner = useContractReader(mainnetContracts, "JBProjects", "ownerOf", [44]);
   const juiceProject = useContractReader(mainnetContracts, "JBProject", "tokenURI", [44]);
-  console.log(juiceProject)
+  console.log(juiceProject);
 
   // The funding cycle that is currently active for the specified project.
   // If a current funding cycle of the project is not found, returns an empty funding cycle with all properties set to 0.
@@ -66,6 +73,29 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
 
   return (
     <div>
+      <Title level={2} className="heading">
+        Global Crypto Stats
+      </Title>
+      <Row gutter={[32, 32]}>
+        <Col span={12}>
+          <Statistic title="Project ID" value={PROJECT_ID} />
+        </Col>
+        <Col span={12}>
+          <Statistic title="Project Owner" value={juiceProjectOwner} />
+        </Col>
+        <Col span={12}>
+          <Statistic title="Treasury Balance" value={`🪙${millify(juiceProjectBalance)}`} />
+        </Col>
+        <Col span={12}>
+          <Statistic title="Unclaimed Token Balance" value={`🪙${millify(totalSupply)}`} />
+        </Col>
+        {/* <Col span={12}>
+          <Statistic title="Total Cryptocurrencies" value={globalStats.total} />
+        </Col>
+        <Col span={12}>
+          <Statistic title="Total Markets" value={millify(globalStats.totalMarkets)} />
+        </Col> */}
+      </Row>
       {/* <div>
         <h1>Project {PROJECT_ID}</h1>
         <span>
@@ -81,8 +111,7 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
-        Unclaimed Total Supply : 🪙{" "}
-       {totalSupply}
+        Unclaimed Total Supply : 🪙 {totalSupply}
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
