@@ -5,6 +5,8 @@ pragma solidity ^0.8.6;
 import "hardhat/console.sol";
 import '@jbx-protocol/contracts-v2/contracts/JBController.sol';
 import "@jbx-protocol/contracts-v2/contracts/interfaces/IJBProjectPayer.sol";
+import "@jbx-protocol/contracts-v2/contracts/interfaces/IJBProjectPayer.sol";
+import "@jbx-protocol/contracts-v2/contracts/libraries/JBTokens.sol";
 
 
 
@@ -12,13 +14,17 @@ import "@jbx-protocol/contracts-v2/contracts/interfaces/IJBProjectPayer.sol";
 contract JBX {
 JBController public jbController;
 IJBProjectPayer public juiceBoxPayer;
+uint256 public juiceBoxProjectId;
 
 
-constructor(){}
+constructor(uint256 _juiceBoxProjectId, address payable _juiceBoxPayerAddress){
+    juiceBoxProjectId = _juiceBoxProjectId;
+    juiceBoxPayer = IJBProjectPayer(_juiceBoxPayerAddress);
+}
 
     
 
-
+// An example function for creating a new project with juicebox
     function newProject(
         JBController jbController,
         address _owner,
@@ -35,7 +41,7 @@ constructor(){}
         
         return projectId;
     }
-
+// A function to fund a juicebox project
     function fund() {
         juiceBoxPayer.pay{value: msg.value}(juiceBoxProjectId, JBTokens.ETH, 0, 0, msg.sender, 0, false, "", "");
     }

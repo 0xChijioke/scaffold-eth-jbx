@@ -17,10 +17,11 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
+  const juiceBoxPayerAddress = 0xd8b5aaaddb2bbfc606e92aafac2c7f4e64e7d609;
+
   await deploy("YourContract", {
-    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    args: [44, juiceBoxPayerAddress],
     log: true,
     waitConfirmations: 5,
   });

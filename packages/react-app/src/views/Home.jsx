@@ -1,11 +1,12 @@
 import { useContractReader } from "eth-hooks";
 import millify from "millify";
-import { Col, Row, Statistic, Typography, message } from "antd";
+import { Col, Row, Statistic, Typography, message, Image } from "antd";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Address, EtherInput } from "../components";
 import { useState } from "react";
+import { web } from "../image";
 
 const { Title } = Typography;
 
@@ -65,7 +66,7 @@ function Home({
   const [fundValue, setFundValue] = useState();
 
   return (
-    <div>
+    <div style={{ margin: "0 auto" }}>
       <div style={{ width: "80%", margin: "0 auto" }}>
         <Title level={1} style={{ padding: 30 }}>
           BUIDLGUIDL ⚔️ JUICEBOX
@@ -79,24 +80,20 @@ function Home({
           </Col>
         </Row>
       </div>
-      <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+      <div style={{ margin: "0 auto", width: "50%" }}>
         <h6 style={{ fontSize: 14, textColor: "#808080" }}>Project Owner</h6>
         <Address
           address={juiceProjectOwner}
           ensProvider={mainnetProvider}
           blockExplorer={blockExplorer}
           fontSize={20}
+          alignItems="center"
         />
       </div>
-      <div style={{ margin: "0 auto", width: "10" }}>
-        Buidlguidl Owner :{" "}
-        <Address
-          address={juiceProjectOwner}
-          ensProvider={mainnetProvider}
-          blockExplorer={blockExplorer}
-          fontSize={20}
-        />
+      <div style={{ marginBottom: 10 }}>
+        <Image height={400} width={400} src={web} alt="project logo" />
       </div>
+      <p>contract is not yet deployed</p>
       <div style={{ width: "fit-content", margin: "0 auto" }}>
         <EtherInput
           autofocus

@@ -10,20 +10,15 @@ const { Text } = Typography;
 
 /** 
   ~ What it does? ~
-
   Displays an address with a blockie image and option to copy address
-
   ~ How can I use? ~
-
   <Address
     address={address}
     ensProvider={mainnetProvider}
     blockExplorer={blockExplorer}
     fontSize={fontSize}
   />
-
   ~ Features ~
-
   - Provide ensProvider={mainnetProvider} and your address will be replaced by ENS name
               (ex. "0xa870" => "user.eth")
   - Provide blockExplorer={blockExplorer}, click on address and get the link
@@ -61,25 +56,24 @@ export default function Address(props) {
   if (props.minimized) {
     return (
       <span style={{ verticalAlign: "middle" }}>
-        <a style={{ color: "#ffff" }} target="_blank" href={etherscanLink} rel="noopener noreferrer">
-          <span style={{ overflow: "hidden", borderRadius: "50%" }}>
-            <Blockies seed={address.toLowerCase()} size={props.blockieSize ? props.blockieSize : 8} scale={2} />
-          </span>
+        <a
+          style={{ color: currentTheme === "light" ? "#222222" : "#ddd" }}
+          target="_blank"
+          href={etherscanLink}
+          rel="noopener noreferrer"
+        >
+          <Blockies seed={address.toLowerCase()} size={8} scale={2} />
         </a>
       </span>
     );
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", paddingRight: 5 }}>
-      <span style={{ overflow: "hidden", borderRadius: "100%", alignItems: "center", display: "flex"}}>
-        <Blockies
-          seed={address.toLowerCase()}
-          size={props.blockieSize ? props.blockieSize : 6}
-          scale={props.fontSize ? props.fontSize / 8 : 4}
-        />
+    <span>
+      <span style={{ verticalAlign: "middle" }}>
+        <Blockies seed={address.toLowerCase()} size={8} scale={props.fontSize ? props.fontSize / 7 : 4} />
       </span>
-      <div style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
+      <span style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
         {props.onChange ? (
           <Text editable={{ onChange: props.onChange }} copyable={{ text: address }}>
             <a
@@ -103,7 +97,7 @@ export default function Address(props) {
             </a>
           </Text>
         )}
-      </div>
-    </div>
+      </span>
+    </span>
   );
 }
