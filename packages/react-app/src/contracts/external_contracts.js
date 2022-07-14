@@ -784,11 +784,13 @@ const DAIABI = [
   },
 ];
 
-// Example how you could bring in juicebox contracts to application
-const JBSinglecontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json`);
-const JBProjectscontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBProjects.json`);
-const JBDirectorycontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBDirectory.json`);
-const JBFundingCycleStorecontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBFundingCycleStore.json`);
+// Example how you could bring in juicebox contracts to your frontend application
+const JBSingleContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json`);
+const JBProjectsContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBProjects.json`);
+const JBDirectoryContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBDirectory.json`);
+const JBFundingCycleStoreContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBFundingCycleStore.json`);
+const JBTokenStoreContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBTokenStore.json`);
+const JBProjectContract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBProjects.json`);
 
 // Mainnet DAI, Optimism and Arbitrium Rollup Contracts with local addresses
 module.exports = {
@@ -803,20 +805,28 @@ module.exports = {
         abi: ERC20ABI,
       },
       JBSingleTokenPaymentTerminalStore: {
-        address: JBSinglecontract.address,
-        abi: JBSinglecontract.abi,
+        address: JBSingleContract.address,
+        abi: JBSingleContract.abi,
       },
       JBProjects: {
-        address: JBProjectscontract.address,
-        abi: JBProjectscontract.abi,
+        address: JBProjectsContract.address,
+        abi: JBProjectsContract.abi,
       },
       JBDirectory: {
-        address: JBDirectorycontract.address,
-        abi: JBDirectorycontract.abi,
+        address: JBDirectoryContract.address,
+        abi: JBDirectoryContract.abi,
       },
       JBFundingCycleStore: {
-        address: JBFundingCycleStorecontract.address,
-        abi: JBFundingCycleStorecontract.abi,
+        address: JBFundingCycleStoreContract.address,
+        abi: JBFundingCycleStoreContract.abi,
+      },
+      JBTokenStore: {
+        address: JBTokenStoreContract.address,
+        abi: JBTokenStoreContract.abi,
+      },
+      JBProject: {
+        address: JBProjectContract.address,
+        abi: JBProjectContract.abi,
       },
     },
   },

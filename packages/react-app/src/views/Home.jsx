@@ -22,7 +22,7 @@ export const JUICE = gql`
   }
 `;
 
-// const PROJECT_ID = 2;
+const PROJECT_ID = 44;
 
 /**
  * web3 props can be passed from '../App.jsx' into your local view component for use
@@ -40,17 +40,28 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
   // });
   // const { data: owner } = useProjectOwner({ projectId: PROJECT_ID });
 
-  const terminals = useContractReader(mainnetContracts, "JBDirectory", "terminalsOf", [44]);
+  const terminals = useContractReader(mainnetContracts, "JBDirectory", "terminalsOf", [PROJECT_ID]);
   const terminal = terminals ? terminals[0] : "";
   console.log(terminal);
+  const getTotalSupply = useContractReader(mainnetContracts, "JBTokenStore", "unclaimedTotalSupplyOf", [PROJECT_ID]);
+  const totalSupply = getTotalSupply ? ethers.utils.formatEther(getTotalSupply) : 0;
+  console.log(totalSupply);
 
   const myMainnetJuiceBalance = useContractReader(mainnetContracts, "JBSingleTokenPaymentTerminalStore", "balanceOf", [
     terminal,
-    44,
+    PROJECT_ID,
   ]);
 
   const juiceProjectOwner = useContractReader(mainnetContracts, "JBProjects", "ownerOf", [44]);
-  const juiceProjectFundingCycle = useContractReader(mainnetContracts, "JBFundingCycleStore​‌", "currentOf", [44]);
+  const juiceProject = useContractReader(mainnetContracts, "JBProject", "tokenURI", [44]);
+  console.log(juiceProject)
+
+  // The funding cycle that is currently active for the specified project.
+  // If a current funding cycle of the project is not found, returns an empty funding cycle with all properties set to 0.
+  // https://github.com/jbx-protocol/juice-docs-v2/blob/main/docs/dev/api/contracts/jbfundingcyclestore/read/currentof.md
+  const juiceProjectFundingCycle = useContractReader(mainnetContracts, "JBFundingCycleStore", "currentOf", [
+    PROJECT_ID,
+  ]);
   console.log(juiceProjectFundingCycle);
 
   return (
@@ -66,11 +77,16 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         Buidlguidl Tresurery Balance : 🪙{" "}
-        {myMainnetJuiceBalance !== undefined && ethers.utils.formatEther(myMainnetJuiceBalance)}
+        {myMainnetJuiceBalance !== undefined && Number(ethers.utils.formatEther(myMainnetJuiceBalance)).toFixed(2)}
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
-        Buidlguidl Owner : {juiceProjectOwner}
+        Unclaimed Total Supply : 🪙{" "}
+       {totalSupply}
+      </div>
+      <div style={{ margin: 32 }}>
+        <span style={{ marginRight: 8 }}>📝</span>
+        Buidlguidl Owner : {juiceProjectOwner && juiceProjectOwner.slice(0, 4) + "..." + juiceProjectOwner.slice(-4)}
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
