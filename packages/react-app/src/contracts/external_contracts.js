@@ -788,6 +788,7 @@ const DAIABI = [
 const JBSinglecontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json`);
 const JBProjectscontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBProjects.json`);
 const JBDirectorycontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBDirectory.json`);
+const JBFundingCycleStorecontract = require(`@jbx-protocol/contracts-v2/deployments/mainnet/JBFundingCycleStore.json`);
 
 // Mainnet DAI, Optimism and Arbitrium Rollup Contracts with local addresses
 module.exports = {
@@ -812,6 +813,10 @@ module.exports = {
       JBDirectory: {
         address: JBDirectorycontract.address,
         abi: JBDirectorycontract.abi,
+      },
+      JBFundingCycleStore: {
+        address: JBFundingCycleStorecontract.address,
+        abi: JBFundingCycleStorecontract.abi,
       },
     },
   },

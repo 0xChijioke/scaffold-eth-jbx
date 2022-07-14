@@ -48,11 +48,11 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
     terminal,
     44,
   ]);
-  console.log(myMainnetJuiceBalance);
-  const juiceProject = useContractReader(mainnetContracts, "JBProjects", "tokenURI", [1]);
-  console.log("Project!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + juiceProject + "PROject");
 
-  
+  const juiceProjectOwner = useContractReader(mainnetContracts, "JBProjects", "ownerOf", [44]);
+  const juiceProjectFundingCycle = useContractReader(mainnetContracts, "JBFundingCycleStore​‌", "currentOf", [44]);
+  console.log(juiceProjectFundingCycle);
+
   return (
     <div>
       {/* <div>
@@ -63,6 +63,15 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
           project owner: {owner ?? "..."}
         </span>
       </div> */}
+      <div style={{ margin: 32 }}>
+        <span style={{ marginRight: 8 }}>📝</span>
+        Buidlguidl Tresurery Balance : 🪙{" "}
+        {myMainnetJuiceBalance !== undefined && ethers.utils.formatEther(myMainnetJuiceBalance)}
+      </div>
+      <div style={{ margin: 32 }}>
+        <span style={{ marginRight: 8 }}>📝</span>
+        Buidlguidl Owner : {juiceProjectOwner}
+      </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         This Is Your App Home. You can start editing it in{" "}
