@@ -1,5 +1,6 @@
-import { Button, Col, Menu, Row } from "antd";
+import { Button, Col, Menu, Row, Image } from "antd";
 import "antd/dist/antd.css";
+import { twiter, telegram } from "./image";
 import {
   useBalance,
   useContractLoader,
@@ -404,18 +405,9 @@ function App(props) {
             <GasGauge gasPrice={gasPrice} />
           </Col>
           <Col span={8} style={{ textAlign: "center", opacity: 1 }}>
-            <Button
-              onClick={() => {
-                window.open("https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA");
-              }}
-              size="large"
-              shape="round"
-            >
-              <span style={{ marginRight: 8 }} role="img" aria-label="support">
-                💬
-              </span>
-              Support
-            </Button>
+            <a href="https://twitter.com/chijoke_">
+            <Image height={40} width={40} src={twiter} />
+            </a>
           </Col>
         </Row>
 
