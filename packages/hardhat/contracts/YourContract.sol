@@ -1,27 +1,45 @@
-pragma solidity >=0.8.0 <0.9.0;
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.6;
+
 
 import "hardhat/console.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol"; 
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+import '@jbx-protocol/contracts-v2/contracts/JBController.sol';
+import "@jbx-protocol/contracts-v2/contracts/interfaces/IJBProjectPayer.sol";
 
-contract YourContract {
 
-  event SetPurpose(address sender, string purpose);
 
-  string public purpose = "Building Unstoppable Apps!!!";
 
-  constructor() payable {
-    // what should we do on deploy?
-  }
+contract JBX {
+JBController public jbController;
+IJBProjectPayer public juiceBoxPayer;
 
-  function setPurpose(string memory newPurpose) public {
-      purpose = newPurpose;
-      console.log(msg.sender,"set purpose to",purpose);
-      emit SetPurpose(msg.sender, purpose);
-  }
 
-  // to support receiving ETH by default
-  receive() external payable {}
-  fallback() external payable {}
+constructor(){}
+
+    
+
+
+    function newProject(
+        JBController jbController,
+        address _owner,
+        JBProjectMetadata calldata _projectMetadata,
+        JBFundingCycleData calldata _data,
+        JBFundingCycleMetadata calldata _metadata,
+        uint256 _mustStartAtOrAfter,
+        JBGroupedSplits[] calldata _groupedSplits,
+        JBFundAccessConstraints[] calldata _fundAccessConstraints,
+        IJBPaymentTerminal[] memory _terminals,
+        string memory _memo) public returns (uint256 projectId) {
+        
+        projectId = jbController.launchProjectFor(_owner, _projectMetadata, _data, _metadata, _mustStartAtOrAfter, _groupedSplits, _fundAccessConstraints, _terminals, _memo);
+        
+        return projectId;
+    }
+
+    function fund() {
+        juiceBoxPayer.pay{value: msg.value}(juiceBoxProjectId, JBTokens.ETH, 0, 0, msg.sender, 0, false, "", "");
+    }
+
+
+
 }

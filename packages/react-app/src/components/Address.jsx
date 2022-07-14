@@ -71,15 +71,15 @@ export default function Address(props) {
   }
 
   return (
-    <div style={{ display: "flex", direction: "row", alignItems: "center" }}>
-      <span style={{ overflow: "hidden", borderRadius: "50%" }}>
+    <div style={{ display: "flex", alignItems: "center", paddingRight: 5 }}>
+      <span style={{ overflow: "hidden", borderRadius: "100%", alignItems: "center", display: "flex"}}>
         <Blockies
           seed={address.toLowerCase()}
-          size={props.blockieSize ? props.blockieSize : 8}
-          scale={props.fontSize ? props.fontSize / 7 : 4}
+          size={props.blockieSize ? props.blockieSize : 6}
+          scale={props.fontSize ? props.fontSize / 8 : 4}
         />
       </span>
-      <span style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
+      <div style={{ verticalAlign: "middle", paddingLeft: 5, fontSize: props.fontSize ? props.fontSize : 28 }}>
         {props.onChange ? (
           <Text editable={{ onChange: props.onChange }} copyable={{ text: address }}>
             <a
@@ -103,7 +103,7 @@ export default function Address(props) {
             </a>
           </Text>
         )}
-      </span>
+      </div>
     </div>
   );
 }
