@@ -4,7 +4,8 @@ import { Col, Row, Statistic, Typography } from "antd";
 import { ethers } from "ethers";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { Address } from "../components";
+// import { useQuery, gql } from "@apollo/client";
 // import { useProjectOwner, useProjectMetadataContent } from "juice-hooks";
 
 const { Title } = Typography;
@@ -34,7 +35,7 @@ const PROJECT_ID = 44;
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
+function Home({ yourLocalBalance, readContracts, mainnetContracts, mainnetProvider, blockExplorer, DEBUG }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
@@ -46,10 +47,10 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
 
   const terminals = useContractReader(mainnetContracts, "JBDirectory", "terminalsOf", [PROJECT_ID]);
   const terminal = terminals ? terminals[0] : "";
-  console.log(terminal);
+  if (DEBUG) console.log(terminal);
   const getTotalSupply = useContractReader(mainnetContracts, "JBTokenStore", "unclaimedTotalSupplyOf", [PROJECT_ID]);
   const totalSupply = getTotalSupply ? ethers.utils.formatEther(getTotalSupply) : 0;
-  console.log(totalSupply);
+  if (DEBUG) console.log(totalSupply);
 
   const myMainnetJuiceBalance = useContractReader(mainnetContracts, "JBSingleTokenPaymentTerminalStore", "balanceOf", [
     terminal,
@@ -57,11 +58,11 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
   ]);
   const juiceProjectBalance = myMainnetJuiceBalance
     ? Number(ethers.utils.formatEther(myMainnetJuiceBalance)).toFixed(2)
-    : 0 ;
+    : 0;
 
   const juiceProjectOwner = useContractReader(mainnetContracts, "JBProjects", "ownerOf", [44]);
   const juiceProject = useContractReader(mainnetContracts, "JBProject", "tokenURI", [44]);
-  console.log(juiceProject);
+  if (DEBUG) console.log(juiceProject);
 
   // The funding cycle that is currently active for the specified project.
   // If a current funding cycle of the project is not found, returns an empty funding cycle with all properties set to 0.
@@ -69,20 +70,14 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
   const juiceProjectFundingCycle = useContractReader(mainnetContracts, "JBFundingCycleStore", "currentOf", [
     PROJECT_ID,
   ]);
-  console.log(juiceProjectFundingCycle);
+  if (DEBUG) console.log(juiceProjectFundingCycle);
 
   return (
     <div>
-      <Title level={2} className="heading">
-        Global Crypto Stats
+      <Title level={1} style={{ padding: 30 }}>
+        BUIDLGUIDL ⚔️ JUICEBOX
       </Title>
       <Row gutter={[32, 32]}>
-        <Col span={12}>
-          <Statistic title="Project ID" value={PROJECT_ID} />
-        </Col>
-        <Col span={12}>
-          <Statistic title="Project Owner" value={juiceProjectOwner} />
-        </Col>
         <Col span={12}>
           <Statistic title="Treasury Balance" value={`🪙${millify(juiceProjectBalance)}`} />
         </Col>
@@ -91,19 +86,34 @@ function Home({ yourLocalBalance, readContracts, mainnetContracts }) {
         </Col>
         {/* <Col span={12}>
           <Statistic title="Total Cryptocurrencies" value={globalStats.total} />
-        </Col>
-        <Col span={12}>
+          </Col>
+          <Col span={12}>
           <Statistic title="Total Markets" value={millify(globalStats.totalMarkets)} />
         </Col> */}
       </Row>
-      {/* <div>
+      {/* <div> 
         <h1>Project {PROJECT_ID}</h1>
         <span>
-          Metadata content id: {cid ?? "..."}
-          <br />
-          project owner: {owner ?? "..."}
+        Metadata content id: {cid ?? "..."}
+        <br />
+        project owner: {owner ?? "..."}
         </span>
-      </div> */}
+      </div> 
+      <Col span={12}>
+          <Statistic title="Project ID" value={PROJECT_ID} />
+        </Col>
+      */}
+      <div
+        style={{ display: "flex", direction: "column", justifyContent: "center", alignItems: "center", width: "100%" }}
+      >
+        <h6 style={{ fontSize: 14, textColor: "#808080" }}>Project Owner</h6>
+        <Address
+          address={juiceProjectOwner}
+          ensProvider={mainnetProvider}
+          blockExplorer={blockExplorer}
+          fontSize={20}
+        />
+      </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         Buidlguidl Tresurery Balance : 🪙{" "}
