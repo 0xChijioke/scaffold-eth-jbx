@@ -2,6 +2,8 @@
 
 > everything you need to start your juicebox frontend build! 🚀
 
+[Project Demo](https://scar-fold.surge.sh/)
+
 Look at external_contracts to see how you can read blockchain data into your application as we have in the homepage.
 
 The contracts are barebones of what you might need to create and pay a [Juicebox]https://juicebox.money/#/) project.
