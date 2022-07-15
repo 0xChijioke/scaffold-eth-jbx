@@ -6,7 +6,7 @@
 
 Look at external_contracts to see how you can read blockchain data into your application as we have in the homepage.
 
-The contracts are barebones of what you might need to create and pay a [Juicebox]https://juicebox.money/#/) project.
+The contracts are barebones of what you might need to create and pay a [Juicebox](https://juicebox.money/#/) project.
 You can customize your contracts and then deploy🚀
 
 # 🏄‍♂️ Quick Start
